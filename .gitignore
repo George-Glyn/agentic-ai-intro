@@ -1,0 +1,65 @@
+# Byte-compiled / optimized / DLL files
+__pycache__/
+*.py[cod]
+*$py.class
+
+# Environment variables
+.env
+
+# macOS metadata
+.DS_Store
+
+# VS Code settings
+.vscode/
+.code-workspace
+
+# Python virtual environments
+venv/
+env/
+.venv/
+ENV/
+env.bak/
+venv.bak/
+
+# Pip dependency logs
+pip-log.txt
+pip-delete-this-directory.txt
+
+# mypy / pyright
+.mypy_cache/
+.pytype/
+.pyright/
+
+# Pytest / coverage
+.coverage
+.cache/
+.pytest_cache/
+
+# Unit test / coverage reports
+htmlcov/
+coverage.xml
+
+# Jupyter Notebook checkpoints
+.ipynb_checkpoints
+
+# FastAPI static file cache (if using)
+static/
+
+# Logs
+*.log
+
+# IDE files
+.idea/
+*.sublime-project
+*.sublime-workspace
+
+# Zip archives
+*.zip
+
+# Output files
+*.out
+*.bak
+
+# langchain / embeddings cache (if used)
+langchain.db
+chroma/
