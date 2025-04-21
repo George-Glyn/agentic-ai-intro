@@ -26,7 +26,9 @@ class FlexibleOrchestrator:
             return "🤖 Sorry, I couldn't understand that request."
 
         try:
-            result = json.loads(agent.handle(query))
+            response = agent.handle(query)
+            result = json.loads(response) if isinstance(response, str) else response
+
             return result
         except json.JSONDecodeError:
             return JSONResponse(
