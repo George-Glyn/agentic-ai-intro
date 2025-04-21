@@ -7,19 +7,19 @@ class TaskCreatorAgent(BaseAgent):
         self.llm = llm
 
     def handle(self, query: str) -> str:
-
         prompt = f"""
-        You are a task creation AI. Given the following instruction, return a concise JSON for a task creation system with fields:
+        You're a task creation agent. Based on the user's request, output the task in JSON format.
 
+        Required keys:
         - title
         - description
         - due_date
         - priority
         - subtasks (list of strings)
 
-        Instruction: {query}
+        Input: {query}
 
-        Only return valid JSON.
+        Only output JSON. Do not include commentary.
         """
         response = self.llm.invoke(prompt)
         # Validate JSON response
@@ -28,8 +28,4 @@ class TaskCreatorAgent(BaseAgent):
         elif response.startswith("```"):
             response = response.replace("```", "").strip()
 
-        try:
-            task_data = json.loads(response)
-            return task_data
-        except json.JSONDecodeError:
-            return "🤖 Sorry, I couldn't create a task from that instruction."
+        return response
