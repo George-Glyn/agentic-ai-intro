@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Agentic AI Copilot</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            padding: 2rem;
+            background: #f4f4f4;
+        }
+
+        h1 {
+            color: #333;
+        }
+
+        input,
+        button,
+        textarea {
+            font-size: 1rem;
+            padding: 0.6rem;
+            margin: 0.4rem 0;
+            width: 100%;
+        }
+
+        pre {
+            background: #222;
+            color: #0f0;
+            padding: 1rem;
+            overflow-x: auto;
+        }
+    </style>
+</head>
+
+<body>
+    <h1>🤖 Agentic AI Copilot</h1>
+    <form id="queryForm">
+        <input type="text" id="queryInput" placeholder="Type your query here..." required />
+        <button type="submit">Submit</button>
+    </form>
+
+    <h3>Response:</h3>
+    <pre id="responseArea">Awaiting input...</pre>
+
+    <script>
+        const form = document.getElementById("queryForm");
+        const input = document.getElementById("queryInput");
+        const responseArea = document.getElementById("responseArea");
+
+        form.addEventListener("submit", async (e) => {
+            e.preventDefault();
+            responseArea.textContent = "Loading...";
+            try {
+                const res = await fetch("/agentic/copilot", {
+                    method: "POST",
+                    headers: { "Content-Type": "application/json" },
+                    body: JSON.stringify({ query: input.value })
+                });
+                const data = await res.json();
+                responseArea.textContent = JSON.stringify(data, null, 2);
+            } catch (err) {
+                responseArea.textContent = "Error: " + err.message;
+            }
+        });
+    </script>
+</body>
+
+</html>

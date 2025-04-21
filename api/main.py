@@ -12,6 +12,7 @@ from agents.data_lookup import DataLookupAgent
 from langchain_google_genai import ChatGoogleGenerativeAI
 import os
 from dotenv import load_dotenv
+from fastapi.responses import FileResponse
 
 # Initialize environment variables
 load_dotenv()
@@ -37,6 +38,11 @@ orchestrator = FlexibleOrchestrator(llm_provider, agent_registry)
 
 class RequestBody(BaseModel):
     query: str
+
+
+@app.get("/")
+def frontend():
+    return FileResponse(os.path.join("web", "index.html"))
 
 
 @app.post("/agentic/copilot")
