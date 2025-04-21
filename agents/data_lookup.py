@@ -6,19 +6,19 @@ class DataLookupAgent(BaseAgent):
 
     def handle(self, query: str) -> str:
         prompt = f"""
-        You are a structured data assistant.
+        Return factual data based on this query in JSON format.
 
-        Given a query like:
-        "What is John Doe's last submitted timesheet date?"
+        Example input: "What is John Doe's last submitted timesheet date?"
 
-        Respond with JSON in this format:
+        Expected output format:
         {{
         "employee_name": "John Doe",
         "last_submitted_timesheet_date": "YYYY-MM-DD"
         }}
 
-        Only return valid JSON. Do not use Markdown or code blocks. Do not describe the response.
         Query: {query}
+
+        Output only valid JSON.
         """
         response = self.llm.invoke(prompt)
         # Validate JSON response
@@ -27,8 +27,4 @@ class DataLookupAgent(BaseAgent):
         elif response.startswith("```"):
             response = response.replace("```", "").strip()
 
-        try:
-            task_data = json.loads(response)
-            return task_data
-        except json.JSONDecodeError:
-            return "🤖 Sorry, I couldn't create a task from that instruction."
+        return response
