@@ -1,28 +1,31 @@
 from .base_agent import BaseAgent
 import json
+from utils.date_utils import resolve_datetime
+
 class CalendarSchedulerAgent(BaseAgent):
     def __init__(self, llm):
         self.llm = llm
 
+
     def handle(self, query: str) -> str:
-        prompt = f"""
-        Extract structured meeting data from the following input and return valid JSON with these fields:
-
-        - title
-        - participant_name
-        - datetime (in ISO 8601 format)
-        - platform (default to "Google Meet" if not specified)
-
-        User input: {query}
-
-        Only return JSON. No Markdown, no natural language.
+        prompt = f"""Extract structured meeting data and return only valid JSON:
+        {{
+        "title": "...",
+        "participant_name": "...",
+        "datetime": "...",
+        "platform": "..."
+        }}
+        Query: {query}
         """
-
         response = self.llm.invoke(prompt)
-        # Validate JSON response
         if response.startswith("```json"):
             response = response.replace("```json", "").replace("```", "").strip()
         elif response.startswith("```"):
             response = response.replace("```", "").strip()
-            
-        return response
+
+        try:
+            parsed = json.loads(response)
+            parsed["datetime"] = resolve_datetime(parsed["datetime"])
+            return parsed
+        except Exception:
+            return {"error": "Failed to parse LLM response", "raw": response}
